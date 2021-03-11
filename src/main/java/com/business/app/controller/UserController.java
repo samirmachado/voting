@@ -1,5 +1,6 @@
 package com.business.app.controller;
 
+import com.business.app.controller.dto.JwtTokenDto;
 import com.business.app.controller.dto.UserCreateDto;
 import com.business.app.controller.dto.UserDto;
 import com.business.app.repository.model.User;
@@ -32,8 +33,9 @@ public class UserController {
             @ApiResponse(code = 400, message = "Something went wrong"),
             @ApiResponse(code = 403, message = "Access denied"),
             @ApiResponse(code = 422, message = "Username is already in use")})
-    public String signUp(@RequestBody(required = true) UserCreateDto userCreateDto) {
-        return userService.signUp(modelMapper.map(userCreateDto, User.class));
+    public JwtTokenDto signUp(@RequestBody(required = true) UserCreateDto userCreateDto) {
+        String token = userService.signUp(modelMapper.map(userCreateDto, User.class));
+        return JwtTokenDto.builder().token(token).build();
     }
 
     @DeleteMapping(value = "/{username}")

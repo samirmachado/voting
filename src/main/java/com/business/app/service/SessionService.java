@@ -33,7 +33,7 @@ public class SessionService {
     public SessionResultPojo getSessionResult(Long sessionId) {
         Session session = sessionRepository.findById(sessionId).orElseThrow(() -> new CustomException("Session not found", HttpStatus.NOT_FOUND));
         List<Vote> votes = voteRepository.findBySessionId(sessionId).orElseThrow(() -> new CustomException("Votes not found", HttpStatus.NOT_FOUND));
-        SessionResultPojo sessionResultPojo = SessionResultPojo.builder().build();
+        SessionResultPojo sessionResultPojo = new SessionResultPojo();
         votes.stream().forEach(v -> {
             if(v.getVote()){
                 sessionResultPojo.setYes(sessionResultPojo.getYes()+1);
