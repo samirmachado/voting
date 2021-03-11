@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/root
+    username: root
+    password: root
+    platform: postgres
+  tomcat:
+    max-wait: 20000
+    max-active: 50
+    max-idle: 20
+    min-idle: 15
+  database:
+    driverClassName: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        default_schema: database
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        id:
+          new_generator_mappings: false
+
+server:
+  port: 8080
+
+security:
+  jwt:
+    token:
+      secret-key: secret-key
+      expire-length: 30000000
+
+feign:
+  client:
+    config:
+      default:
+        errorDecoder: com.business.app.integration.feingexception.FeignExceptionHandler
+        loggerLevel: BASIC
