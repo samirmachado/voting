@@ -6,7 +6,6 @@ import com.business.app.repository.SessionRepository;
 import com.business.app.repository.VoteRepository;
 import com.business.app.repository.model.Session;
 import com.business.app.repository.model.Vote;
-import com.business.app.repository.model.constant.SessionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class VoteService {
         if (!session.isPresent()) {
             throw new CustomException("The session doesn't exist", HttpStatus.NOT_FOUND);
         }
-        if (session.get().getSessionStatus().equals(SessionStatus.CLOSED)) {
+        if (!session.get().isNotExpired()) {
             throw new CustomException("The session has already been closed", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         if(!cpfValidator.validateCpfToVote(vote.getUser().getCpf()).isValid()){

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Data
-public class User {
+public class User extends Auditable {
 
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;

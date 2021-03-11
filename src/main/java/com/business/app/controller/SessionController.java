@@ -2,6 +2,7 @@ package com.business.app.controller;
 
 import com.business.app.controller.dto.SessionCreateDto;
 import com.business.app.controller.dto.SessionDto;
+import com.business.app.controller.dto.SessionResultDto;
 import com.business.app.repository.model.Session;
 import com.business.app.service.SessionService;
 import io.swagger.annotations.*;
@@ -48,5 +49,17 @@ public class SessionController {
     public List<SessionDto> listAll() {
         Type listType = new TypeToken<List<SessionDto>>(){}.getType();
         return modelMapper.map(sessionService.listAll(), listType);
+    }
+
+    @GetMapping("/{sessionId}/result")
+    @ApiOperation(value = "get the voting result by the session id", authorizations = {@Authorization(value = "apiKey")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Something went wrong"),
+            @ApiResponse(code = 403, message = "Access denied"),
+            @ApiResponse(code = 404, message = "Doesn't exist"),
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public SessionResultDto getSessionResult(@PathVariable(required = true) Long sessionId) {
+        return modelMapper.map(sessionService.getSessionResult(sessionId), SessionResultDto.class);
     }
 }

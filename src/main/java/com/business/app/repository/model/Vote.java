@@ -10,7 +10,7 @@ import javax.persistence.*;
         @UniqueConstraint(columnNames = {"user_id", "session_id"})
 )
 @Data
-public class Vote {
+public class Vote extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -30,7 +30,7 @@ security:
   jwt:
     token:
       secret-key: secret-key
-      expire-length: 30000000
+      expire-length: 360000
 
 feign:
   client:

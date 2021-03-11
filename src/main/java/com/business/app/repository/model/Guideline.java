@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class Guideline {
+public class Guideline extends Auditable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
