@@ -55,4 +55,4 @@ vote:
     check:
       fixedRate:
         in:
-          milliseconds: 1000
+          milliseconds: 10000

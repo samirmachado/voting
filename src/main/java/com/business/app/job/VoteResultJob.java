@@ -1,4 +1,4 @@
-package com.business.app.controller;
+package com.business.app.job;
 
 import com.business.app.exception.CustomException;
 import com.business.app.repository.SessionRepository;

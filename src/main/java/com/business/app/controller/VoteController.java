@@ -18,7 +18,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 @RestController
-@RequestMapping("/vote")
+@RequestMapping("/api/v1/vote")
 @Api(tags = "vote")
 public class VoteController {
 

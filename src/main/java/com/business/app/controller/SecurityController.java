@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/security")
+@RequestMapping("/api/v1/security")
 @Api(tags = "security")
 public class SecurityController {
 

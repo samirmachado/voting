@@ -15,7 +15,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 @RestController
-@RequestMapping("/guideline")
+@RequestMapping("/api/v1/guideline")
 @Api(tags = "guideline")
 public class GuidelineController {
 

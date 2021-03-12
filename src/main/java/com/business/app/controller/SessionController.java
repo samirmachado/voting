@@ -16,7 +16,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 @RestController
-@RequestMapping("/session")
+@RequestMapping("/api/v1/session")
 @Api(tags = "session")
 public class SessionController {
 

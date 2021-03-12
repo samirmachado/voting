@@ -17,7 +17,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 @Api(tags = "users")
 public class UserController {
 
