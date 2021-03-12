@@ -1,5 +1,6 @@
 package com.business.app.repository.model;
 
+import com.business.app.repository.model.constant.KafkaSessionStatus;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -24,7 +25,10 @@ public class Session extends Auditable {
     @OneToOne(optional = false)
     private Guideline guideline;
 
-    public Boolean isNotExpired() {
-        return Objects.isNull(expirationDate) || LocalDateTime.now().isBefore(expirationDate);
+    @Enumerated(EnumType.STRING)
+    private KafkaSessionStatus kafkaSessionStatus;
+
+    public Boolean isExpired() {
+        return Objects.isNull(expirationDate) || expirationDate.isBefore(LocalDateTime.now());
     }
 }

@@ -26,11 +26,22 @@ spring:
 server:
   port: 8080
 
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+
 security:
   jwt:
     token:
       secret-key: secret-key
       expire-length: 360000
+
+kafka:
+  bootstrap-server: localhost:9092
+  topic:
+    name: topic_vote_results
 
 feign:
   client:
@@ -38,3 +49,10 @@ feign:
       default:
         errorDecoder: com.business.app.integration.feingexception.FeignExceptionHandler
         loggerLevel: BASIC
+
+vote:
+  result:
+    check:
+      fixedRate:
+        in:
+          milliseconds: 1000

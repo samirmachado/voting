@@ -30,14 +30,22 @@ public class VoteService {
         if (!session.isPresent()) {
             throw new CustomException("The session doesn't exist", HttpStatus.NOT_FOUND);
         }
-        if (!session.get().isNotExpired()) {
+        if (session.get().isExpired()) {
             throw new CustomException("The session has already been closed", HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        if(!cpfValidator.validateCpfToVote(vote.getUser().getCpf()).isValid()){
+        if (!cpfCanVote(vote.getUser().getCpf())) {
             throw new CustomException("this user cannot vote", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         vote.setSession(session.get());
         return voteRepository.save(vote);
+    }
+
+    private Boolean cpfCanVote(String cpf) {
+        try {
+            return cpfValidator.validateCpfToVote(cpf).isValid();
+        } catch (CustomException e) {
+            throw new CustomException("this CPF is invalid", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 
     public List<Vote> listAll() {
