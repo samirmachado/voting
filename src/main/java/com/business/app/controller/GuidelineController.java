@@ -5,6 +5,7 @@ import com.business.app.controller.dto.GuidelineDto;
 import com.business.app.repository.model.Guideline;
 import com.business.app.service.GuidelineService;
 import io.swagger.annotations.*;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/guideline")
 @Api(tags = "guideline")
+@Log4j2
 public class GuidelineController {
 
     @Autowired
@@ -33,6 +35,7 @@ public class GuidelineController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public GuidelineDto create(@RequestBody(required = true) GuidelineCreateDto guidelineCreateDto) {
+        log.info("Creating Guideline: {}", guidelineCreateDto);
         Guideline createdGuideline = guidelineService.create(modelMapper.map(guidelineCreateDto, Guideline.class));
         return modelMapper.map(createdGuideline, GuidelineDto.class);
     }
@@ -46,6 +49,7 @@ public class GuidelineController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<GuidelineDto> listAll() {
+        log.info("List All Guidelines");
         Type listType = new TypeToken<List<GuidelineDto>>(){}.getType();
         return modelMapper.map(guidelineService.listAll(), listType);
     }

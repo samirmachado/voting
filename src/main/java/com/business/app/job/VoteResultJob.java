@@ -47,12 +47,15 @@ public class VoteResultJob {
     }
 
     private void sendSessionResultToKafka(Session session) {
+        log.info("Find session result os session: {}", session);
         SessionResultPojo sessionResultPojo = sessionService.getSessionResult(session.getId());
+        log.info("Sending session result to Kafka: {}", sessionResultPojo);
         sessionResultService.sendDataToKafkaTopic(sessionResultPojo);
     }
 
     private void updateStatusToSubmitted(Session session) {
         session.setKafkaSessionStatus(KafkaSessionStatus.SUBMITTED);
+        log.info("Updating KafkaSessionStatus of Session in Database: {}", session);
         sessionRepository.save(session);
     }
 }

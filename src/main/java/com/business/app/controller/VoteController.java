@@ -7,6 +7,7 @@ import com.business.app.repository.model.Vote;
 import com.business.app.service.UserService;
 import com.business.app.service.VoteService;
 import io.swagger.annotations.*;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/vote")
 @Api(tags = "vote")
+@Log4j2
 public class VoteController {
 
     @Autowired
@@ -40,7 +42,9 @@ public class VoteController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     @PreAuthorize("hasRole('ROLE_ASSOCIATE')")
     public void vote(@RequestBody(required = true) VoteCreateDto voteCreateDto, HttpServletRequest req) {
+        log.info("Creating Vote: {}", voteCreateDto);
         User user = userService.findUserSession(req);
+        log.info("User Voting is: {}", user);
         Vote vote = modelMapper.map(voteCreateDto, Vote.class);
         vote.setUser(user);
         voteService.vote(vote);
@@ -55,6 +59,7 @@ public class VoteController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<VoteDto> listAll() {
+        log.info("List All Users");
         Type listType = new TypeToken<List<VoteDto>>(){}.getType();
         return modelMapper.map(voteService.listAll(), listType);
     }

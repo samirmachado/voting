@@ -6,6 +6,7 @@ import com.business.app.controller.dto.UserDto;
 import com.business.app.repository.model.User;
 import com.business.app.service.UserService;
 import io.swagger.annotations.*;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 @Api(tags = "users")
+@Log4j2
 public class UserController {
 
     @Autowired
@@ -34,6 +36,7 @@ public class UserController {
             @ApiResponse(code = 403, message = "Access denied"),
             @ApiResponse(code = 422, message = "Username is already in use")})
     public JwtTokenDto signUp(@RequestBody(required = true) UserCreateDto userCreateDto) {
+        log.info("SignUp: {}", userCreateDto);
         String token = userService.signUp(modelMapper.map(userCreateDto, User.class));
         return JwtTokenDto.builder().token(token).build();
     }
@@ -47,6 +50,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "Doesn't exist"),
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     public void delete(@PathVariable(required = true) String username) {
+        log.info("Deleting user by username: {}", username);
         userService.delete(username);
     }
 
@@ -58,6 +62,7 @@ public class UserController {
             @ApiResponse(code = 403, message = "Access denied"),
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     public UserDto create(@RequestBody(required = true) UserCreateDto userCreateDto) {
+        log.info("Creating user: {}", userCreateDto);
         User createdUser = userService.create(modelMapper.map(userCreateDto, User.class));
         return modelMapper.map(createdUser, UserDto.class);
     }
@@ -71,6 +76,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "Doesn't exist"),
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     public UserDto search(@PathVariable(required = true) String username) {
+        log.info("Searching user by username: {}", username);
         return modelMapper.map(userService.findByUsername(username), UserDto.class);
     }
 
@@ -83,6 +89,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserDto> listAll() {
+        log.info("List All Users");
         Type listType = new TypeToken<List<UserDto>>(){}.getType();
         return modelMapper.map(userService.listAll(), listType);
     }
@@ -95,7 +102,10 @@ public class UserController {
             @ApiResponse(code = 403, message = "Access denied"),
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     public UserDto findUserSession(HttpServletRequest req) {
-        return modelMapper.map(userService.findUserSession(req), UserDto.class);
+        log.info("Searching logged user");
+        UserDto user = modelMapper.map(userService.findUserSession(req), UserDto.class);
+        log.info("Logged user id: {}", user);
+        return user;
     }
 
 }

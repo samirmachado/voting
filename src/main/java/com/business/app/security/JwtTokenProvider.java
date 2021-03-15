@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
+    public static final String EXPIRED_OR_INVALID_JWT_TOKEN = "Expired or invalid JWT token";
     @Value("${security.jwt.token.secret-key:secret-key}")
     private String secretKey;
 
@@ -78,7 +79,7 @@ public class JwtTokenProvider {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            throw new CustomException("Expired or invalid JWT token", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new CustomException(EXPIRED_OR_INVALID_JWT_TOKEN, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

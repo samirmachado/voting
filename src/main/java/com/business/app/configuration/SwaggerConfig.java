@@ -37,10 +37,10 @@ public class SwaggerConfig {
     }
 
     private ApiInfo metadata() {
-        return new ApiInfoBuilder()//
-                .title("Voting system")//
-                .description("This is a simple voting system")//
-                .version("1.0.0")//
+        return new ApiInfoBuilder()
+                .title("Voting system")
+                .description("This is a simple voting system")
+                .version("1.0.0")
                 .build();
     }
 

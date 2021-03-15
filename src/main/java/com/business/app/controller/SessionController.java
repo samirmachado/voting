@@ -6,6 +6,7 @@ import com.business.app.controller.dto.SessionResultDto;
 import com.business.app.repository.model.Session;
 import com.business.app.service.SessionService;
 import io.swagger.annotations.*;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/session")
 @Api(tags = "session")
+@Log4j2
 public class SessionController {
 
     @Autowired
@@ -34,6 +36,7 @@ public class SessionController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public SessionDto create(@RequestBody(required = true) SessionCreateDto sessionCreateDto) {
+        log.info("Creating Session: {}", sessionCreateDto);
         Session createdSession = sessionService.create(modelMapper.map(sessionCreateDto, Session.class));
         return modelMapper.map(createdSession, SessionDto.class);
     }
@@ -47,6 +50,7 @@ public class SessionController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<SessionDto> listAll() {
+        log.info("List All Sessions");
         Type listType = new TypeToken<List<SessionDto>>(){}.getType();
         return modelMapper.map(sessionService.listAll(), listType);
     }
@@ -60,6 +64,7 @@ public class SessionController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public SessionResultDto getSessionResult(@PathVariable(required = true) Long sessionId) {
+        log.info("Get Session Result of sessionId: {}", sessionId);
         return modelMapper.map(sessionService.getSessionResult(sessionId), SessionResultDto.class);
     }
 }

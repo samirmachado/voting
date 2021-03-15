@@ -7,6 +7,7 @@ import com.business.app.repository.model.Session;
 import com.business.app.repository.model.Vote;
 import com.business.app.repository.model.constant.KafkaSessionStatus;
 import com.business.app.service.pojo.SessionResultPojo;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@Log4j2
 public class SessionService {
+
+    public static final String SESSION_NOT_FOUND = "Session not found";
 
     @Autowired
     private SessionRepository sessionRepository;
@@ -26,15 +30,19 @@ public class SessionService {
     private VoteRepository voteRepository;
 
     public Session create(Session session) {
+        log.info("Creating Session: {}", session);
         if (Objects.isNull(session.getExpirationDate())) {
             session.setExpirationDate(LocalDateTime.now().plusSeconds(60));
         }
         session.setKafkaSessionStatus(KafkaSessionStatus.WAITING_FOR_CONCLUSION);
-        return sessionRepository.save(session);
+        Session createdSession = sessionRepository.save(session);
+        log.info("Created Session: {}", createdSession);
+        return createdSession;
     }
 
     public SessionResultPojo getSessionResult(Long sessionId) {
-        Session session = sessionRepository.findById(sessionId).orElseThrow(() -> new CustomException("Session not found", HttpStatus.NOT_FOUND));
+        log.info("Find Session Result by session id: {}", sessionId);
+        Session session = sessionRepository.findById(sessionId).orElseThrow(() -> new CustomException(SESSION_NOT_FOUND, HttpStatus.NOT_FOUND));
         List<Vote> votes = voteRepository.findBySessionId(sessionId).orElse(new ArrayList<>());
         SessionResultPojo sessionResultPojo = new SessionResultPojo();
         votes.stream().forEach(v -> {
@@ -45,10 +53,12 @@ public class SessionService {
             }
         });
         sessionResultPojo.setClosed(session.isExpired());
+        log.info("Session result is: {}", sessionResultPojo);
         return sessionResultPojo;
     }
 
     public List<Session> listAll() {
+        log.info("Listing Sessions");
         return sessionRepository.findAll();
     }
 }
