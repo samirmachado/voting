@@ -1,5 +1,6 @@
 package com.business.app.repository.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
         @UniqueConstraint(columnNames = {"user_id", "session_id"})
 )
 @Data
+@Builder
 public class Vote extends Auditable {
 
     @Id

@@ -1,6 +1,7 @@
 package com.business.app.repository.model;
 
 import com.business.app.repository.model.constant.Role;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder
 public class User extends Auditable {
 
     @ElementCollection(fetch = FetchType.EAGER)

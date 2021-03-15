@@ -16,6 +16,11 @@ import java.util.Optional;
 @Service
 public class VoteService {
 
+    public static final String THE_SESSION_DOESN_T_EXIST = "The session doesn't exist";
+    public static final String THE_SESSION_HAS_ALREADY_BEEN_CLOSED = "The session has already been closed";
+    public static final String THIS_USER_CANNOT_VOTE = "this user cannot vote";
+    public static final String THIS_CPF_IS_INVALID = "this CPF is invalid";
+
     @Autowired
     private SessionRepository sessionRepository;
 
@@ -28,13 +33,13 @@ public class VoteService {
     public Vote vote(Vote vote) {
         Optional<Session> session = sessionRepository.findById(vote.getSession().getId());
         if (!session.isPresent()) {
-            throw new CustomException("The session doesn't exist", HttpStatus.NOT_FOUND);
+            throw new CustomException(THE_SESSION_DOESN_T_EXIST, HttpStatus.NOT_FOUND);
         }
         if (session.get().isExpired()) {
-            throw new CustomException("The session has already been closed", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new CustomException(THE_SESSION_HAS_ALREADY_BEEN_CLOSED, HttpStatus.UNPROCESSABLE_ENTITY);
         }
         if (!cpfCanVote(vote.getUser().getCpf())) {
-            throw new CustomException("this user cannot vote", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new CustomException(THIS_USER_CANNOT_VOTE, HttpStatus.UNPROCESSABLE_ENTITY);
         }
         vote.setSession(session.get());
         return voteRepository.save(vote);
@@ -44,7 +49,7 @@ public class VoteService {
         try {
             return cpfValidator.validateCpfToVote(cpf).isValid();
         } catch (CustomException e) {
-            throw new CustomException("this CPF is invalid", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new CustomException(THIS_CPF_IS_INVALID, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.business.app.repository.model;
 
 import com.business.app.repository.model.constant.KafkaSessionStatus;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Data
+@Builder
 public class Session extends Auditable {
 
     @Id
