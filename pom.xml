@@ -106,6 +106,10 @@
             <artifactId>modelmapper</artifactId>
             <version>2.3.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

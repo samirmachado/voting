@@ -1,9 +1,10 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/root
+    url: jdbc:postgresql://localhost:5432/postgres
     username: root
     password: root
     platform: postgres
+    initialize: false
   tomcat:
     max-wait: 20000
     max-active: 50
@@ -11,13 +12,15 @@ spring:
     min-idle: 15
   database:
     driverClassName: org.postgresql.Driver
+  liquibase:
+    default-schema: liquibase
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
-        default_schema: database
+        default_schema: application
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         id:
@@ -25,7 +28,6 @@ spring:
 
 server:
   port: 8080
-
 
 logging:
   level:
