@@ -3,6 +3,7 @@ package com.business.app.controller;
 import com.business.app.controller.dto.JwtTokenDto;
 import com.business.app.controller.dto.SignInDto;
 import com.business.app.service.SecurityService;
+import com.business.app.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -23,6 +24,9 @@ public class SecurityController {
 
     @Autowired
     private SecurityService securityService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     private ModelMapper modelMapper;

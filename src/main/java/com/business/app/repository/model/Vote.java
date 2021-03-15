@@ -1,7 +1,9 @@
 package com.business.app.repository.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -12,6 +14,8 @@ import javax.persistence.*;
 )
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Vote extends Auditable {
 
     @Id
