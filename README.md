@@ -13,10 +13,6 @@ Para garantir que nenhum usuário vote sem permissão, foi feito uma integraçã
 
 Para o versionamento da base de dados foi utilizado o Liquibase, ele é responsável por criar a estrutura inicial da base de dados e gerenciar toda a sua evolução posterior.
 
-Foram criados somente testes unitários para a camada de serviço, o ideal seria criar também testes unitários nos controllers com Mock MVC, 
-teste integrado para validar as consultas da base de dados (utilizando um banco embarcado como o H2), teste integrado para verificar os 
-tópicos do Kafka etc. Infelizmente meu tempo foi mais curto que o esperado e não pude implementá-los.
-
 ## Requisitos
 
 * Java JDK 11
